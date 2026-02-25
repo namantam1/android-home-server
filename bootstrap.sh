@@ -97,6 +97,19 @@ if [[ ! -f "$PREFIX/etc/ssh/sshd_config" ]]; then
     ssh-keygen -A >/dev/null 2>&1
 fi
 
+sshd 2>/dev/null || true
+
+echo ""
 echo "Bootstrap complete!"
+echo ""
+echo "SSH Connection:"
+DEVICE_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "YOUR_DEVICE_IP")
+if [[ "$DEVICE_IP" == "YOUR_DEVICE_IP" ]]; then
+    echo "  Run 'ifconfig' to find your device IP"
+    echo "  Then: ssh -p 8022 $(whoami)@<device_ip>"
+else
+    echo "  ssh -p 8022 $(whoami)@$DEVICE_IP"
+fi
+echo ""
 echo "Run 'android-home help' for available commands"
 
