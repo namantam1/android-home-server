@@ -7,7 +7,7 @@ REPO_URL="https://github.com/namantam1/android-home-server.git"
 echo "Updating scripts..."
 
 cd "$INSTALL_DIR"
-git fetch origin >/dev/null 2>&1
+git fetch origin
 LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/main)
 

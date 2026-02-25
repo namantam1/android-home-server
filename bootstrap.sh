@@ -14,15 +14,15 @@ if [[ ! -d "$PREFIX" ]]; then
 fi
 
 echo "Updating packages..."
-pkg update -y >/dev/null 2>&1 || true
-pkg upgrade -y >/dev/null 2>&1 || true
+pkg update -y || true
+pkg upgrade -y || true
 
 echo "Installing dependencies..."
-pkg install -y git openssh termux-services >/dev/null 2>&1
+pkg install -y git openssh termux-services
 
 echo "Setting up storage..."
 if [[ ! -d "$HOME/storage" ]]; then
-    termux-setup-storage >/dev/null 2>&1 || true
+    termux-setup-storage || true
     sleep 1
 fi
 
@@ -31,10 +31,10 @@ mkdir -p "$INSTALL_DIR"
 echo "Downloading repository..."
 if [[ -d "$INSTALL_DIR/.git" ]]; then
     cd "$INSTALL_DIR"
-    git fetch origin >/dev/null 2>&1
-    git reset --hard origin/main >/dev/null 2>&1
+    git fetch origin
+    git reset --hard origin/main
 else
-    git clone "$REPO_URL" "$INSTALL_DIR" >/dev/null 2>&1
+    git clone "$REPO_URL" "$INSTALL_DIR"
 fi
 
 echo "Installing CLI tool..."
@@ -52,17 +52,17 @@ chmod +x "$BOOT_DIR/start-sshd"
 
 echo "Initializing SSH..."
 if [[ ! -f "$PREFIX/etc/ssh/sshd_config" ]]; then
-    ssh-keygen -A >/dev/null 2>&1
+    ssh-keygen -A
 fi
 
-sshd 2>/dev/null || true
+sshd || true
 
 echo ""
 echo "Bootstrap complete!"
 echo ""
 echo "SSH Connection:"
-DEVICE_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "YOUR_DEVICE_IP")
-if [[ "$DEVICE_IP" == "YOUR_DEVICE_IP" ]]; then
+DEVICE_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || ifconfig 2>/dev/null | grep 'inet ' | grep -v 127.0.0.1 | awk '{print $2}' | head -1)
+if [[ -z "$DEVICE_IP" ]]; then
     echo "  Run 'ifconfig' to find your device IP"
     echo "  Then: ssh -p 8022 $(whoami)@<device_ip>"
 else
