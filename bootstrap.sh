@@ -38,49 +38,7 @@ else
 fi
 
 echo "Installing CLI tool..."
-cat > "$CLI_SCRIPT" << 'EOF'
-#!/usr/bin/env bash
-INSTALL_DIR="$HOME/.android-home"
-SCRIPTS_DIR="$INSTALL_DIR/scripts"
-
-case "$1" in
-    setup)
-        bash "$SCRIPTS_DIR/setup-${2}.sh" "${@:3}"
-        ;;
-    start)
-        bash "$SCRIPTS_DIR/start-${2}.sh" "${@:3}"
-        ;;
-    status)
-        bash "$SCRIPTS_DIR/status.sh"
-        ;;
-    update)
-        bash "$SCRIPTS_DIR/update.sh"
-        ;;
-    help|--help|-h|"")
-        cat << HELP
-Usage: android-home <command> [options]
-
-Commands:
-  setup <service>    Setup a service (ssh, file-browser, tunnel, all)
-  start <service>    Start a service (ssh, file-browser, tunnel)
-  status             Show service status
-  update             Update to latest version
-  help               Show this help message
-
-Examples:
-  android-home setup ssh
-  android-home start file-browser
-  android-home update
-
-HELP
-        ;;
-    *)
-        echo "Unknown command: $1"
-        echo "Run 'android-home help' for usage"
-        exit 1
-        ;;
-esac
-EOF
+ln -sf "$INSTALL_DIR/android-home" "$CLI_SCRIPT" || cp "$INSTALL_DIR/android-home" "$CLI_SCRIPT"
 chmod +x "$CLI_SCRIPT"
 echo "CLI tool installed"
 

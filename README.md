@@ -90,10 +90,15 @@ cd ~/.android-home
 
 2. Make scripts executable:
 ```bash
-chmod +x bootstrap.sh scripts/*.sh
+chmod +x bootstrap.sh android-home scripts/*.sh
 ```
 
-3. Run bootstrap:
+3. Create symlink to CLI tool:
+```bash
+ln -sf ~/.android-home/android-home $PREFIX/bin/android-home
+```
+
+4. Run bootstrap:
 ```bash
 bash bootstrap.sh
 ```
@@ -101,6 +106,8 @@ bash bootstrap.sh
 ## Structure
 
 ```
+android-home            # CLI tool (symlink to this from $PREFIX/bin)
+bootstrap.sh            # Bootstrap script for first run
 scripts/
   setup-ssh.sh           # SSH server setup
   setup-file-browser.sh  # FileBrowser build and install
@@ -110,7 +117,6 @@ scripts/
   start-tunnel.sh       # Start Cloudflare tunnel
   status.sh             # Show service status
   update.sh             # Update scripts
-bootstrap.sh            # Bootstrap script for first run
 ```
 
 ## Notes
