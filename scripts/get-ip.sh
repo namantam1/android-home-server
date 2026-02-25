@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Get device IP address from network interfaces
 
-DEVICE_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || ifconfig 2>/dev/null | grep 'inet ' | grep -v 127.0.0.1 | awk '{print $2}' | head -1)
+DEVICE_IP=$(ip -4 addr show scope global 2>/dev/null \
+    | awk '/inet /{print $2; exit}' \
+    | cut -d/ -f1)
 
 if [[ -z "$DEVICE_IP" ]]; then
-    echo "<device_ip>"
-else
-    echo "$DEVICE_IP"
+    DEVICE_IP=$(ifconfig 2>/dev/null | awk '/inet / && $2 != "127.0.0.1" {print $2; exit}')
 fi
+
+printf '%s\n' "${DEVICE_IP:-<device_ip>}"
+
