@@ -61,13 +61,7 @@ echo ""
 echo "Bootstrap complete!"
 echo ""
 echo "SSH Connection:"
-DEVICE_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || ifconfig 2>/dev/null | grep 'inet ' | grep -v 127.0.0.1 | awk '{print $2}' | head -1)
-if [[ -z "$DEVICE_IP" ]]; then
-    echo "  Run 'ifconfig' to find your device IP"
-    echo "  Then: ssh -p 8022 $(whoami)@<device_ip>"
-else
-    echo "  ssh -p 8022 $(whoami)@$DEVICE_IP"
-fi
+echo "  ssh -p 8022 $(whoami)@$(bash "$INSTALL_DIR/scripts/get-ip.sh")"
 echo ""
 echo "Run 'android-home help' for available commands"
 
