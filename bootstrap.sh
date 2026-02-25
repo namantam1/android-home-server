@@ -55,7 +55,48 @@ if [[ ! -f "$PREFIX/etc/ssh/sshd_config" ]]; then
     ssh-keygen -A
 fi
 
+# Ensure password authentication is enabled so users can login with a UNIX password
+SSHD_CONF="$PREFIX/etc/ssh/sshd_config"
+if [[ -f "$SSHD_CONF" ]]; then
+    if grep -q "^PasswordAuthentication" "$SSHD_CONF" 2>/dev/null; then
+        sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' "$SSHD_CONF"
+    else
+        echo "PasswordAuthentication yes" >> "$SSHD_CONF"
+    fi
+fi
+
+# Start sshd (ignore errors if already running)
 sshd || true
+
+# If a default password is provided via environment, try to set it non-interactively.
+# Export a password before running bootstrap, e.g.:
+#   ANDROID_HOME_DEFAULT_PASS='s3cret' bash bootstrap.sh
+USER_NAME=$(whoami)
+export ANDROID_HOME_DEFAULT_PASS='admin'
+if [[ -n "$ANDROID_HOME_DEFAULT_PASS" ]]; then
+    echo "Setting default password for user $USER_NAME"
+    DEFAULT_PASS="$ANDROID_HOME_DEFAULT_PASS"
+    # Prefer chpasswd if available
+    if command -v chpasswd >/dev/null 2>&1; then
+        echo "$USER_NAME:$DEFAULT_PASS" | chpasswd || echo "Warning: chpasswd failed"
+    else
+        # Try passwd via stdin if running on a tty
+        if command -v passwd >/dev/null 2>&1 && [ -t 0 ]; then
+            printf "%s\n%s\n" "$DEFAULT_PASS" "$DEFAULT_PASS" | passwd "$USER_NAME" || echo "Warning: passwd failed"
+        else
+            echo "Warning: cannot set password non-interactively on this system. Run 'passwd' to set it manually."
+        fi
+    fi
+else
+    # If running interactively, prompt the user to set their UNIX password used for SSH
+    if [ -t 0 ]; then
+        echo ""
+        echo "Set your UNIX password (this will be used for SSH login):"
+        passwd || true
+    else
+        echo "To set your SSH password later, run: passwd"
+    fi
+fi
 
 echo ""
 echo "Bootstrap complete!"
