@@ -3,6 +3,9 @@ set -e
 
 echo "Setting up FileBrowser..."
 
+# make sure helper functions are available for template installation
+source "$(dirname "$0")/../lib/setup-service.sh"
+
 # skip if already installed (binary or service present)
 if command -v filebrowser &> /dev/null || [[ -d "$PREFIX/var/service/file-browser" ]]; then
     echo "FileBrowser already installed, skipping setup"
@@ -58,6 +61,5 @@ rm -rf "$TEMP_DIR"
 echo "FileBrowser installed successfully"
 
 # Setup service template
-source "$(dirname "$0")/../lib/setup-service.sh"
 setup_service "file-browser"
 echo "To start FileBrowser, run: sv start file-browser"
