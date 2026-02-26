@@ -7,4 +7,4 @@ fi
 
 PORT=${1:-8080}
 echo "Starting Cloudflare tunnel for localhost:$PORT"
-cloudflared tunnel --url localhost:$PORT
+exec cloudflared tunnel --url localhost:$PORT

@@ -9,4 +9,3 @@ if [[ -z "$DEVICE_IP" ]]; then
 fi
 
 printf '%s\n' "${DEVICE_IP:-<device_ip>}"
-

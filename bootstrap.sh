@@ -64,7 +64,7 @@ echo "Set the UNIX password for SSH login, run:"
 echo "  passwd"
 echo ""
 echo "SSH Connection:"
-echo "  ssh -p 8022 $(whoami)@$(bash "$INSTALL_DIR/scripts/get-ip.sh")"
+echo "  ssh -p 8022 $(whoami)@$(bash "$INSTALL_DIR/scripts/lib/get-ip.sh")"
 echo ""
 echo "Run 'android-home help' for available commands"
 

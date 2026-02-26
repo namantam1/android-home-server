@@ -9,27 +9,27 @@ case "$1" in
     setup)
         if [[ -z "$2" ]]; then
             echo "Usage: android-home setup <service>"
-            echo "Services: ssh, file-browser, tunnel, all"
+            echo "Services: ssh, file-browser, cloudflare-tunnel, all"
             exit 1
         fi
         if [[ "$2" == "all" ]]; then
-            bash "$SCRIPTS_DIR/setup-ssh.sh"
-            bash "$SCRIPTS_DIR/setup-file-browser.sh"
-            bash "$SCRIPTS_DIR/setup-tunnel.sh"
+            bash "$SCRIPTS_DIR/ssh/setup.sh"
+            bash "$SCRIPTS_DIR/file-browser/setup.sh"
+            bash "$SCRIPTS_DIR/cloudflare-tunnel/setup.sh"
         else
-            bash "$SCRIPTS_DIR/setup-${2}.sh"
+            bash "$SCRIPTS_DIR/${2}/setup.sh"
         fi
         ;;
     start)
         if [[ -z "$2" ]]; then
             echo "Usage: android-home start <service>"
-            echo "Services: ssh, file-browser, tunnel"
+            echo "Services: ssh, file-browser, cloudflare-tunnel"
             exit 1
         fi
-        bash "$SCRIPTS_DIR/start-${2}.sh" "${@:3}"
+        bash "$SCRIPTS_DIR/${2}/start.sh" "${@:3}"
         ;;
     status)
-        bash "$SCRIPTS_DIR/status.sh"
+        bash "$SCRIPTS_DIR/lib/status.sh"
         ;;
     update)
         bash "$SCRIPTS_DIR/update.sh"
@@ -39,8 +39,8 @@ case "$1" in
 Usage: android-home <command> [options]
 
 Commands:
-  setup <service>    Setup a service (ssh, file-browser, tunnel, all)
-  start <service>    Start a service (ssh, file-browser, tunnel)
+  setup <service>    Setup a service (ssh, file-browser, cloudflare-tunnel, all)
+  start <service>    Start a service (ssh, file-browser, cloudflare-tunnel)
   status             Show service status
   update             Update to latest version
   help               Show this help message

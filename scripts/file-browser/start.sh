@@ -8,5 +8,5 @@ fi
 mkdir -p "$HOME/.filebrowser"
 
 echo "Starting FileBrowser on http://0.0.0.0:8080"
-echo "Access via: http://$(bash "$(dirname "$0")/get-ip.sh"):8080"
-filebrowser -r ~/storage -d "$HOME/.filebrowser/filebrowser.db" --address 0.0.0.0 --port 8080
+echo "Access via: http://$(bash "$(dirname "$0")/../lib/get-ip.sh"):8080"
+exec filebrowser -r ~/storage -d "$HOME/.filebrowser/filebrowser.db" --address 0.0.0.0 --port 8080

@@ -40,4 +40,8 @@ cd
 rm -rf "$TEMP_DIR"
 
 echo "FileBrowser installed successfully"
-echo "Run: android-home start file-browser"
+
+# Setup service template
+source "$(dirname "$0")/../lib/setup-service.sh"
+setup_service "file-browser"
+echo "To start FileBrowser, run: sv start file-browser"

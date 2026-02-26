@@ -25,4 +25,8 @@ rm -rf "$TEMP_DIR"
 
 cloudflared --version
 echo "Cloudflared installed successfully"
-echo "Run: android-home start tunnel"
+
+# Setup service template
+source "$(dirname "$0")/../lib/setup-service.sh"
+setup_service "cloudflare-tunnel"
+echo "To start the tunnel, run: sv start cloudflare-tunnel"
