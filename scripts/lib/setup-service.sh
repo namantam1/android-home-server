@@ -13,7 +13,8 @@ setup_service() {
         return 1
     fi
     
-    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+    # script_dir should point at the repository root, not the scripts subfolder
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
     local service_template="$script_dir/templates/$service_name"
     local service_dir="$PREFIX/var/service/$service_name"
     
