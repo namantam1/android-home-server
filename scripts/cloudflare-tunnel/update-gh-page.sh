@@ -17,7 +17,7 @@ set +a
 : "${GITHUB_OWNER:?'GITHUB_OWNER must be set in ~/.github-config'}"
 : "${GITHUB_REPO:?'GITHUB_REPO must be set in ~/.github-config'}"
 
-GITHUB_BRANCH="${GITHUB_BRANCH:-config}"
+GITHUB_BRANCH="${GITHUB_BRANCH:-gh-pages}"
 GITHUB_FILE="${GITHUB_FILE:-config.json}"
 COMMITTER_NAME="${COMMITTER_NAME:-GitHub Actions}"
 COMMITTER_EMAIL="${COMMITTER_EMAIL:-actions@github.com}"
