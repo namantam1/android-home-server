@@ -1,4 +1,4 @@
-METRICS_PORT=20242
+METRICS_PORT=4040
 until curl -s "http://127.0.0.1:${METRICS_PORT}/metrics" \
       | sed -n 's/.*userHostname="\([^"]*\)".*/\1/p' \
       | grep -q 'trycloudflare.com'; do
