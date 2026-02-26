@@ -17,7 +17,7 @@ set +a
 : "${GITHUB_OWNER:?'GITHUB_OWNER must be set in ~/.github-config'}"
 : "${GITHUB_REPO:?'GITHUB_REPO must be set in ~/.github-config'}"
 
-GITHUB_BRANCH="${GITHUB_BRANCH:-gh-pages}"
+GITHUB_BRANCH="${GITHUB_BRANCH:-config}"
 GITHUB_FILE="${GITHUB_FILE:-config.json}"
 COMMITTER_NAME="${COMMITTER_NAME:-GitHub Actions}"
 COMMITTER_EMAIL="${COMMITTER_EMAIL:-actions@github.com}"
@@ -43,7 +43,7 @@ sha=$(curl -s \
     -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "$API_URL?ref=$GITHUB_BRANCH" \
-    | grep -o '"sha":"[^"]*"' | head -1 | sed 's/"sha":"//;s/"//')
+    | grep -o '"sha":[[:space:]]*"[^"]*"' | head -1 | sed 's/"sha":[[:space:]]*"//;s/"//' || true)
 
 if [[ -n "$sha" ]]; then
     body=$(printf \
