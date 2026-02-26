@@ -1,0 +1,13 @@
+# Copy this file to ~/.github-config and fill in your values.
+# cp .github-config.template ~/.github-config
+
+# Required
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+GITHUB_OWNER=your-username
+GITHUB_REPO=your-repo-name
+
+# Optional (defaults shown)
+# GITHUB_BRANCH=gh-pages
+# GITHUB_FILE=config.json
+# COMMITTER_NAME=GitHub Actions
+# COMMITTER_EMAIL=actions@github.com
