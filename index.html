@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Naman Android Home Server</title>
 </head>
-
 <body>
     <p>Redirecting...</p>
     <script>
-        fetch('https://raw.githubusercontent.com/namantam1/android-home-server/refs/heads/config/config.json')
+        fetch('config.json')
             .then(r => r.json())
             .then(data => window.location.href = data.redirectUrl)
             .catch(() => console.error('Failed to load config'));
     </script>
 </body>
-
 </html>
