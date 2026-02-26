@@ -7,7 +7,7 @@ GITHUB_OWNER=your-username
 GITHUB_REPO=your-repo-name
 
 # Optional (defaults shown)
-# GITHUB_BRANCH=gh-pages
+# GITHUB_BRANCH=config
 # GITHUB_FILE=config.json
 # COMMITTER_NAME=GitHub Actions
 # COMMITTER_EMAIL=actions@github.com
