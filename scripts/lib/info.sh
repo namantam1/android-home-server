@@ -20,27 +20,3 @@ if command -v termux-battery-status &>/dev/null; then
 fi
 
 echo ""
-
-# Service status with port
-svc_status() {
-    local name="$1" bin="$2" port="$3"
-    if command -v "$bin" &>/dev/null; then
-        if pgrep -x "$bin" &>/dev/null; then
-            echo "  $name     running  :$port"
-        else
-            echo "  $name     stopped"
-        fi
-    else
-        echo "  $name     not installed"
-    fi
-}
-
-svc_status "filebrowser    " filebrowser 8080
-svc_status "cloudflare-tunnel" cloudflared ""
-
-# Tunnel URL if cloudflared running
-if pgrep -x cloudflared &>/dev/null; then
-    url=$(curl -s "http://127.0.0.1:4040/metrics" \
-        | sed -n 's/.*userHostname="\([^"]*\)".*/\1/p' | head -1)
-    [[ -n "$url" ]] && echo "  tunnel-url       https://$url"
-fi

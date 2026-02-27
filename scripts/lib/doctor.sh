@@ -15,10 +15,6 @@ sv status sshd &>/dev/null 2>&1             && ok "runit supervisor"      || fai
 [[ -d "$HOME/storage" ]]                    && ok "storage mounted"       || fail "storage not mounted (run: termux-setup-storage)"
 
 echo ""
-echo "SSH"
-pgrep -x sshd &>/dev/null                  && ok "sshd running"          || fail "sshd not running"
-
-echo ""
 echo "FileBrowser"
 command -v filebrowser &>/dev/null          && ok "installed"             || fail "not installed (android-home setup filebrowser)"
 [[ -d "$PREFIX/var/service/filebrowser" ]] && ok "runit enabled"         || fail "not enabled (android-home enable filebrowser)"

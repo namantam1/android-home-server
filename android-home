@@ -67,6 +67,9 @@ case "$1" in
     ip)
         bash "$LIB/get-ip.sh"
         ;;
+    tunnel-url)
+        bash "$SCRIPTS_DIR/cloudflare-tunnel/tunnel-url.sh"
+        ;;
     info)
         bash "$LIB/info.sh"
         ;;
@@ -110,6 +113,7 @@ System:
   services              List services with install/enabled status
   status                Show running status
   ip                    Print LAN IP address
+  tunnel-url            Print current Cloudflare tunnel URL
   info                  System summary (storage, battery, services)
   doctor                Run health checks
 

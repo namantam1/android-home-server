@@ -3,7 +3,7 @@ _android_home() {
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    local commands="setup run start stop restart enable disable logs status services ip info doctor backup restore completion update help"
+    local commands="setup run start stop restart enable disable logs status services ip tunnel-url info doctor backup restore completion update help"
     local services="filebrowser cloudflare-tunnel"
 
     case "$prev" in
