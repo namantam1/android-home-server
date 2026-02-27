@@ -1,127 +1,50 @@
 # Android Home Server
 
-Setup script and CLI tools to turn an Android device with Termux into a home server. Includes SSH access, file browser, and Cloudflare tunnel support.
+Turn a Termux Android device into a home server with SSH, file browser, and Cloudflare tunnel.
 
-## Quick Start
-
-On your Android device with Termux installed:
+## Install
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/namantam1/android-home-server/main/bootstrap.sh | bash
 ```
 
-This will:
-- Update packages
-- Install SSH, git, and termux-services
-- Setup storage access
-- Install the `android-home` CLI tool
-- Configure auto-start SSH on boot
+Sets up SSH, installs the `android-home` CLI, and configures auto-start on boot.
 
-## Available Commands
+## Usage
 
 ```bash
-# Setup commands (install services)
-android-home setup ssh              # Setup SSH server
-android-home setup filebrowser     # Setup FileBrowser
-android-home setup tunnel           # Setup Cloudflare tunnel
-android-home setup all              # Setup all services
-
-# Start commands (run services)
-android-home start ssh              # Start SSH server
-android-home start filebrowser     # Start FileBrowser
-android-home start tunnel           # Start Cloudflare tunnel
-
-# Other commands
-android-home status                 # Show service status
-android-home update                 # Update to latest version
-android-home help                   # Show help
+android-home setup <service>   # Install a service
+android-home start <service>   # Start a service
+android-home services          # List services with install status
+android-home status            # Show running status
+android-home completion        # Enable bash tab completion
+android-home update            # Update to latest version
 ```
 
 ## Services
 
-### SSH Server
+**`filebrowser`** — Web-based file manager, accessible at `http://<device-ip>:8080`
 
-Provides remote terminal access over the network.
-
+**`cloudflare-tunnel`** — Exposes local services to the internet over a secure tunnel.
+After setup, configure `~/.github-config` to auto-publish the tunnel URL:
 ```bash
-android-home setup ssh
-android-home start ssh
+cp ~/.android-home/.github-config.template ~/.github-config
+nano ~/.github-config
 ```
-
-Connect from your laptop:
-```bash
-ssh -p 8022 user@<device_ip>
-```
-
-Find your device IP:
-```bash
-ifconfig
-```
-
-### FileBrowser
-
-Web-based file manager and storage server.
-
-```bash
-android-home setup filebrowser
-android-home start filebrowser
-```
-
-Access via: `http://<device_ip>:8080`
-
-### Cloudflare Tunnel
-
-Expose your services securely to the internet.
-
-```bash
-android-home setup tunnel
-android-home start tunnel 8080  # Expose FileBrowser
-```
-
-## Manual Installation
-
-If bootstrap doesn't work, install manually:
-
-1. Clone the repository:
-```bash
-git clone https://github.com/namantam1/android-home-server.git ~/.android-home
-cd ~/.android-home
-```
-
-2. Make scripts executable:
-```bash
-chmod +x bootstrap.sh android-home scripts/*.sh
-```
-
-3. Create symlink to CLI tool:
-```bash
-ln -sf ~/.android-home/android-home $PREFIX/bin/android-home
-```
-
-4. Run bootstrap:
-```bash
-bash bootstrap.sh
-```
+Then start: `android-home start cloudflare-tunnel 8080`
 
 ## Structure
 
 ```
-android-home            # CLI tool (symlink to this from $PREFIX/bin)
-bootstrap.sh            # Bootstrap script for first run
+android-home          # CLI entry point
+bootstrap.sh          # First-time setup
 scripts/
-  setup-ssh.sh           # SSH server setup
-  setup-filebrowser.sh  # FileBrowser build and install
-  setup-tunnel.sh        # Cloudflare tunnel setup
-  start-ssh.sh          # Start SSH
-  start-filebrowser.sh # Start FileBrowser
-  start-tunnel.sh       # Start Cloudflare tunnel
-  status.sh             # Show service status
-  update.sh             # Update scripts
+  lib/                # Shared utilities and helpers
+  filebrowser/        # Build, setup, start
+  cloudflare-tunnel/  # Setup, start, tunnel URL updater
+templates/            # runit service definitions
 ```
 
-## Notes
+## Troubleshooting
 
-- SSH auto-starts on boot via `~/.termux/boot/start-sshd`
-- Services run in foreground; use tmux/screen for background execution
-- FileBrowser stores files in `~/storage`
-- Cloudflare tunnel requires internet connection
+See [troubleshoot.md](troubleshoot.md) for fixes to common Termux issues (process killed, signal 9, etc.).
