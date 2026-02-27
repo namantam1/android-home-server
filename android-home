@@ -22,9 +22,17 @@ case "$1" in
             bash "$SCRIPTS_DIR/$2/setup.sh"
         fi
         ;;
+    run)
+        [[ -z "$2" ]] && { echo "Usage: android-home run <service>"; exit 1; }
+        bash "$SCRIPTS_DIR/$2/start.sh" "${@:3}"
+        ;;
     start)
         [[ -z "$2" ]] && { echo "Usage: android-home start <service>"; exit 1; }
-        bash "$SCRIPTS_DIR/$2/start.sh" "${@:3}"
+        sv start "$2"
+        ;;
+    stop)
+        [[ -z "$2" ]] && { echo "Usage: android-home stop <service>"; exit 1; }
+        sv stop "$2"
         ;;
     status)
         bash "$SCRIPTS_DIR/lib/status.sh"
@@ -58,7 +66,9 @@ Usage: android-home <command> [options]
 
 Commands:
   setup <service>    Setup a service (${SERVICES[*]}, all)
-  start <service>    Start a service
+  run <service>      Run a service in the foreground
+  start <service>    Start a service via runit (sv start)
+  stop <service>     Stop a service via runit (sv stop)
   services           List available services with install status
   status             Show running service status
   completion         Enable bash tab completion
