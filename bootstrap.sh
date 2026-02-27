@@ -15,7 +15,8 @@ fi
 
 echo "Updating packages..."
 pkg update -y || true
-pkg upgrade -y || true
+# Disabling as it is failing
+# pkg upgrade -y || true 
 
 echo "Installing dependencies..."
 pkg install -y git openssh termux-services
