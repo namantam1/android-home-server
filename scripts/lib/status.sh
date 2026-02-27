@@ -3,13 +3,6 @@
 echo "Checking service status..."
 echo ""
 
-echo "SSH:"
-if pgrep -x sshd > /dev/null; then
-    echo "  Status: running"
-else
-    echo "  Status: not running"
-fi
-
 echo ""
 echo "FileBrowser:"
 if command -v filebrowser &> /dev/null; then
