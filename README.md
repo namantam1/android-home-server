@@ -22,13 +22,13 @@ This will:
 ```bash
 # Setup commands (install services)
 android-home setup ssh              # Setup SSH server
-android-home setup file-browser     # Setup FileBrowser
+android-home setup filebrowser     # Setup FileBrowser
 android-home setup tunnel           # Setup Cloudflare tunnel
 android-home setup all              # Setup all services
 
 # Start commands (run services)
 android-home start ssh              # Start SSH server
-android-home start file-browser     # Start FileBrowser
+android-home start filebrowser     # Start FileBrowser
 android-home start tunnel           # Start Cloudflare tunnel
 
 # Other commands
@@ -63,8 +63,8 @@ ifconfig
 Web-based file manager and storage server.
 
 ```bash
-android-home setup file-browser
-android-home start file-browser
+android-home setup filebrowser
+android-home start filebrowser
 ```
 
 Access via: `http://<device_ip>:8080`
@@ -110,10 +110,10 @@ android-home            # CLI tool (symlink to this from $PREFIX/bin)
 bootstrap.sh            # Bootstrap script for first run
 scripts/
   setup-ssh.sh           # SSH server setup
-  setup-file-browser.sh  # FileBrowser build and install
+  setup-filebrowser.sh  # FileBrowser build and install
   setup-tunnel.sh        # Cloudflare tunnel setup
   start-ssh.sh          # Start SSH
-  start-file-browser.sh # Start FileBrowser
+  start-filebrowser.sh # Start FileBrowser
   start-tunnel.sh       # Start Cloudflare tunnel
   status.sh             # Show service status
   update.sh             # Update scripts

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if ! command -v filebrowser &> /dev/null; then
-    echo "FileBrowser not installed. Run: android-home setup file-browser"
+    echo "FileBrowser not installed. Run: android-home setup filebrowser"
     exit 1
 fi
 

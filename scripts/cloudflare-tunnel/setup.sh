@@ -14,4 +14,8 @@ echo "Setting up Cloudflare Tunnel..."
 try_install "$(dirname "$0")"
 cloudflared --version
 setup_service "cloudflare-tunnel"
+
+echo "Cloudflare tunnel setup done, Created github config and update variables:"
+echo "  cp ~/.android-home/.github-config.template ~/.github-config"
+echo "  nano ~/.github-config"
 echo "To start the tunnel, run: sv start cloudflare-tunnel"

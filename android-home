@@ -9,12 +9,12 @@ case "$1" in
     setup)
         if [[ -z "$2" ]]; then
             echo "Usage: android-home setup <service>"
-            echo "Services: ssh, file-browser, cloudflare-tunnel, all"
+            echo "Services: ssh, filebrowser, cloudflare-tunnel, all"
             exit 1
         fi
         if [[ "$2" == "all" ]]; then
             bash "$SCRIPTS_DIR/ssh/setup.sh"
-            bash "$SCRIPTS_DIR/file-browser/setup.sh"
+            bash "$SCRIPTS_DIR/filebrowser/setup.sh"
             bash "$SCRIPTS_DIR/cloudflare-tunnel/setup.sh"
         else
             bash "$SCRIPTS_DIR/${2}/setup.sh"
@@ -23,7 +23,7 @@ case "$1" in
     start)
         if [[ -z "$2" ]]; then
             echo "Usage: android-home start <service>"
-            echo "Services: ssh, file-browser, cloudflare-tunnel"
+            echo "Services: ssh, filebrowser, cloudflare-tunnel"
             exit 1
         fi
         bash "$SCRIPTS_DIR/${2}/start.sh" "${@:3}"
@@ -39,15 +39,15 @@ case "$1" in
 Usage: android-home <command> [options]
 
 Commands:
-  setup <service>    Setup a service (ssh, file-browser, cloudflare-tunnel, all)
-  start <service>    Start a service (ssh, file-browser, cloudflare-tunnel)
+  setup <service>    Setup a service (ssh, filebrowser, cloudflare-tunnel, all)
+  start <service>    Start a service (ssh, filebrowser, cloudflare-tunnel)
   status             Show service status
   update             Update to latest version
   help               Show this help message
 
 Examples:
   android-home setup ssh
-  android-home start file-browser
+  android-home start filebrowser
   android-home update
 
 HELP
