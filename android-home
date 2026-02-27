@@ -2,9 +2,11 @@
 
 INSTALL_DIR="$HOME/.android-home"
 SCRIPTS_DIR="$INSTALL_DIR/scripts"
+LIB="$SCRIPTS_DIR/lib"
 
-# Services known to this repo (must have a setup.sh)
 SERVICES=(filebrowser cloudflare-tunnel)
+
+source "$LIB/service.sh"
 
 _is_installed() {
     case "$1" in
@@ -34,45 +36,90 @@ case "$1" in
         [[ -z "$2" ]] && { echo "Usage: android-home stop <service>"; exit 1; }
         sv stop "$2"
         ;;
+    restart)
+        [[ -z "$2" ]] && { echo "Usage: android-home restart <service>"; exit 1; }
+        sv restart "$2"
+        ;;
+    enable)
+        [[ -z "$2" ]] && { echo "Usage: android-home enable <service>"; exit 1; }
+        enable_service "$2"
+        ;;
+    disable)
+        [[ -z "$2" ]] && { echo "Usage: android-home disable <service>"; exit 1; }
+        disable_service "$2"
+        ;;
+    logs)
+        [[ -z "$2" ]] && { echo "Usage: android-home logs <service>"; exit 1; }
+        tail -f "$PREFIX/var/log/sv/$2/current"
+        ;;
     status)
-        bash "$SCRIPTS_DIR/lib/status.sh"
+        bash "$LIB/status.sh"
         ;;
     services)
         echo "Available services:"
         for svc in "${SERVICES[@]}"; do
-            if _is_installed "$svc"; then
-                echo "  $svc [installed]"
-            else
-                echo "  $svc"
-            fi
+            flag=""
+            _is_installed "$svc" && flag=" [installed]"
+            _is_enabled "$svc"   && flag+=" [enabled]"
+            echo "  $svc$flag"
         done
         ;;
+    ip)
+        bash "$LIB/get-ip.sh"
+        ;;
+    info)
+        bash "$LIB/info.sh"
+        ;;
+    doctor)
+        bash "$LIB/doctor.sh"
+        ;;
+    backup)
+        bash "$LIB/backup.sh" "$2"
+        ;;
+    restore)
+        bash "$LIB/restore.sh" "$2"
+        ;;
     completion)
-        if ! command -v bash-completion &>/dev/null && [[ ! -f "$PREFIX/share/bash-completion/bash_completion" ]]; then
+        if [[ ! -f "$PREFIX/share/bash-completion/bash_completion" ]]; then
             echo "Installing bash-completion..."
             pkg install -y bash-completion
         fi
         dest="$PREFIX/share/bash-completion/completions/android-home"
-        ln -sf "$SCRIPTS_DIR/lib/completion.bash" "$dest"
+        ln -sf "$LIB/completion.bash" "$dest"
         echo "Bash completion enabled. Restart your shell or run:"
         echo "  source $dest"
         ;;
     update)
-        bash "$SCRIPTS_DIR/lib/update.sh"
+        bash "$LIB/update.sh"
         ;;
     help|--help|-h|"")
         cat <<HELP
 Usage: android-home <command> [options]
 
-Commands:
-  setup <service>    Setup a service (${SERVICES[*]}, all)
-  run <service>      Run a service in the foreground
-  start <service>    Start a service via runit (sv start)
-  stop <service>     Stop a service via runit (sv stop)
-  services           List available services with install status
-  status             Show running service status
-  completion         Enable bash tab completion
-  update             Update to latest version
+Service management:
+  setup <service|all>   Install a service
+  enable <service>      Register with runit (auto-start on boot)
+  disable <service>     Unregister from runit
+  start <service>       sv start
+  stop <service>        sv stop
+  restart <service>     sv restart
+  run <service>         Run in foreground (for debugging)
+  logs <service>        Tail service logs
+
+System:
+  services              List services with install/enabled status
+  status                Show running status
+  ip                    Print LAN IP address
+  info                  System summary (storage, battery, services)
+  doctor                Run health checks
+
+Data:
+  backup [dest]         Archive config files
+  restore <file>        Restore from backup
+
+Other:
+  completion            Enable bash tab completion
+  update                Update to latest version
 HELP
         ;;
     *)
